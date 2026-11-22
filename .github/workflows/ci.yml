@@ -1,0 +1,58 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test --workspace --release
+
+  mcu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv6m-none-eabi
+      - run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+      - name: navcore builds for Cortex-M0+
+        run: cargo build --release -p navcore --target thumbv6m-none-eabi
+      - name: flash and RAM
+        run: ./scripts/size.sh | tee size.txt
+      - name: stay under 6 KB of flash
+        run: |
+          text=$(awk 'NR==2 {print $1}' size.txt)
+          echo "text=$text"
+          test "$text" -lt 6144
+
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --target wasm32-unknown-unknown -p poolnav-web
+      - name: wasm exports run
+        run: |
+          node -e "
+          const fs=require('fs');
+          WebAssembly.instantiate(fs.readFileSync('target/wasm32-unknown-unknown/release/poolnav_web.wasm'),{}).then(({instance:{exports:e}})=>{
+            if(e.pn_new(0,1,1,0.5,0.08,45)!==0) throw new Error('pn_new');
+            e.pn_step(30000);
+            const c=e.pn_coverage();
+            console.log('coverage after 50 min', c);
+            if(!(c>0.9)) throw new Error('coverage too low');
+          });"
