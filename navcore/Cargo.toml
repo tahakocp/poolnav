@@ -1,0 +1,9 @@
+[package]
+name = "navcore"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Coverage navigation for a pool robot that only has a gyro and motor current sensing"
+
+[lib]
+test = true
