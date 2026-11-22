@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>poolnav: coverage for a pool robot with only a gyro</title>
+<meta name="description" content="Same pool, same dropped-in position, same sensor noise. Left: bounce off the walls. Right: poolnav lanes. The controller is the real firmware code, compiled to WebAssembly.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>poolnav</h1>
+  <p>Two robots, same pool, same start, same sensor noise. The controller on each side is the real firmware code running as WebAssembly.</p>
+</header>
+
+<section class="controls">
+  <label>Pool
+    <select id="pool"><option>rect</option><option>l-shape</option><option>steps</option><option>kidney</option></select>
+  </label>
+  <label>Right side
+    <select id="variant">
+      <option value="1">lanes</option>
+      <option value="2">lanes, one pass</option>
+      <option value="3">lanes, no wall snap</option>
+      <option value="4">lanes, no bias learning</option>
+    </select>
+  </label>
+  <label>Seed <input id="seed" type="number" value="1" min="1" max="99999"></label>
+  <label>Gyro bias <output id="o-bias"></output>
+    <input id="bias" type="range" min="0" max="3" step="0.1" value="0.5"></label>
+  <label>Speed error <output id="o-err"></output>
+    <input id="err" type="range" min="0" max="25" step="1" value="8"></label>
+  <label>Speed <output id="o-speed"></output>
+    <input id="speed" type="range" min="1" max="60" step="1" value="12"></label>
+  <button id="restart">Restart</button>
+  <button id="pause">Pause</button>
+</section>
+
+<main>
+  <figure>
+    <canvas id="c0" width="560" height="320"></canvas>
+    <figcaption><b>Bounce</b> <span id="s0"></span></figcaption>
+  </figure>
+  <figure>
+    <canvas id="c1" width="560" height="320"></canvas>
+    <figcaption><b id="name1">Lanes</b> <span id="s1"></span></figcaption>
+  </figure>
+</main>
+
+<section class="notes">
+  <p>Simulation only. Speeds, slip and gyro noise are round numbers in the range of consumer robots, not measurements of one product. Teal is cleaned, grey is not yet reached. Blue trail is the path; the orange bar is the front of the body.</p>
+  <p>Source, bench numbers and the firmware size: <a href="https://github.com/tahakocp/poolnav">github.com/tahakocp/poolnav</a>.</p>
+</section>
+<script src="app.js"></script>
+</body>
+</html>
