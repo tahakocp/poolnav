@@ -172,7 +172,8 @@ fn trace(args: &[String]) {
     while w.t < minutes * 60.0 {
         w.step();
         n += 1;
-        if n % 5 == 0 {
+        if n == 5 {
+            n = 0;
             let st = format!("{:?}", w.nav.state());
             let st = st.split(['(', ' ']).next().unwrap_or("");
             println!(
