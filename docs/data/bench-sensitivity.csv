@@ -1,0 +1,18 @@
+# --gyro-bias 2.0
+pool,variant,runs,median_min_to_90,median_min_to_95,reached_99_pct,median_min_to_99,median_final_cov_pct,median_swept_over_cleaned
+rect,random,100,25.1,33.3,92,58.6,99.0,5.82
+rect,lanes,100,16.6,22.2,92,41.0,99.0,4.33
+l-shape,random,100,25.7,35.5,92,62.6,99.0,6.27
+l-shape,lanes,100,22.4,32.0,93,57.9,99.0,5.68
+# --speed-err 0.2
+pool,variant,runs,median_min_to_90,median_min_to_95,reached_99_pct,median_min_to_99,median_final_cov_pct,median_swept_over_cleaned
+rect,random,100,31.3,42.0,53,68.3,99.0,6.53
+rect,lanes,100,23.5,33.4,54,57.7,99.0,5.10
+l-shape,random,100,30.5,41.5,57,73.7,99.0,7.02
+l-shape,lanes,100,26.7,38.1,56,69.1,99.0,6.32
+# --align 15
+pool,variant,runs,median_min_to_90,median_min_to_95,reached_99_pct,median_min_to_99,median_final_cov_pct,median_swept_over_cleaned
+rect,random,100,24.9,34.4,91,60.0,99.0,6.12
+rect,lanes,100,16.6,19.2,91,37.8,99.0,3.90
+l-shape,random,100,26.4,36.8,91,68.5,99.0,6.76
+l-shape,lanes,100,21.0,30.3,91,59.6,99.0,5.75
