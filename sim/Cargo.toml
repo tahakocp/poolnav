@@ -1,0 +1,13 @@
+[package]
+name = "poolsim"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "2D pool robot simulator that runs the navcore controller"
+
+[dependencies]
+navcore = { path = "../navcore" }
+
+[[bin]]
+name = "poolsim"
+path = "src/main.rs"
